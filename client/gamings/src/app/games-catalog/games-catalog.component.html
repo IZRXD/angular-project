@@ -1,0 +1,31 @@
+<main>
+  <section class="heading-row">
+    <h1>GAMES FOR SALE</h1>
+  </section>
+  @if (isLoading) {
+  <app-loader />
+  } @else {
+  <section class="games-catalog">
+    @for (game of games; track $index) {
+    <div class="card">
+      <div class="card-image">
+        <img
+          src="{{ game.imageUrl }}"
+          alt="{{ game.title }}'s Cover"
+          class="game-image"
+        />
+      </div>
+      <div class="card-content">
+        
+        <h2>{{ game.title }}</h2>
+      </div>
+      <div class="card-footer">
+        <p>{{ game.price }} <i class="fa-solid fa-star"></i></p> 
+        <!-- make it rating -->
+        <a [routerLink]="['/catalog', game._id, 'details']">DETAILS</a>
+      </div>
+    </div>
+    }
+  </section>
+  }
+</main>

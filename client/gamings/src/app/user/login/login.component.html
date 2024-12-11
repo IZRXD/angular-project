@@ -1,0 +1,44 @@
+<main>
+  <section class="auth-section">
+    <div class="container">
+      <div class="form">
+        <h1>LOGIN</h1>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="form-group" [class.input-error]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+            <label for="email">Email:</label>
+            <input type="email" id="email" class="form-control" formControlName="email" placeholder="Enter your email address">
+            <span class="error-message" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required']">
+              Email is required
+            </span>
+            <span class="error-message" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['email']">
+              Invalid email format
+            </span>
+          </div>
+
+          <div class="form-group" [class.input-error]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+            <label for="password">Password:</label>
+            <input type="password" id="password" class="form-control" formControlName="password" placeholder="Enter your password">
+            <span class="error-message" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']">
+              Password is required
+            </span>
+            <span class="error-message" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['minlength']">
+              Password must be at least 6 characters
+            </span>
+          </div>
+
+          <div class="form-group">
+            <button class="btn" [disabled]="loginForm.invalid || loading">
+              {{ loading ? 'Logging in...' : 'SIGN IN' }}
+            </button>
+          </div>
+          <div *ngIf="error" class="error-message">
+            {{ error }}
+          </div>
+        </form>
+        <div class="helpful-links">
+          <h4>Don't have an account? <a routerLink="/register">Register</a></h4>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
