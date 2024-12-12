@@ -1,0 +1,36 @@
+<header class="header-area header-sticky">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="main-nav">
+          <!-- ***** Logo Start ***** -->
+          <a routerLink="/home" class="logo big">
+            <img src="../../../assets/images/logo.png" alt="" />
+          </a>
+          <!-- ***** Logo End ***** -->
+          <!-- ***** Search End ***** -->
+
+          <!-- ***** Search End ***** -->
+          <!-- ***** Menu Start ***** -->
+          <ul class="nav">
+            <li><a routerLink="/home">Home</a></li>
+            <li><a routerLink="/about">About us</a></li>
+            @if (!isLoggedIn) {
+            <li><a routerLink="/login">Login</a></li>
+            <li><a routerLink="/register">Register</a></li>
+            } @else{
+            <li><a routerLink="/create-game">Create</a></li>
+            <li><a routerLink="/catalog">Browse</a></li>
+            <li><a (click)="logout()">Logout</a></li>
+
+            }
+          </ul>
+          <a class="menu-trigger">
+            <span>Menu</span>
+          </a>
+          <!-- ***** Menu End ***** -->
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>

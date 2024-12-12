@@ -1,0 +1,63 @@
+<main>
+  <section class="auth-section">
+    <div class="container">
+      <div class="form">
+        <h1>REGISTER</h1>
+        <form [formGroup]="form" (ngSubmit)="register()">
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" formControlName="email" />
+            <div
+              *ngIf="form.get('email')?.invalid && form.get('email')?.touched"
+              class="error"
+            >
+              Email is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" formControlName="password" />
+            <div
+              *ngIf="
+                form.get('password')?.invalid && form.get('password')?.touched
+              "
+              class="error"
+            >
+              Password is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="repass">Repeat Password:</label>
+            <input type="password" id="repass" formControlName="repass" />
+            <div
+              *ngIf="
+                form.value.password !== form.value.repass &&
+                form.get('repass')?.touched
+              "
+              class="error"
+            >
+              Passwords do not match
+            </div>
+          </div>
+
+          <div class="form-group">
+            <button
+              class="btn"
+              type="submit"
+              [disabled]="
+                form.invalid || form.value.password !== form.value.repass
+              "
+            >
+              REGISTER
+            </button>
+          </div>
+        </form>
+        <div class="helpful-links">
+          <h4>Already have an account? <a routerLink="/login">Sign In</a></h4>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
