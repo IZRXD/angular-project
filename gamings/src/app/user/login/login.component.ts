@@ -1,14 +1,19 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { UserService } from '../user.service';
 import { catchError, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
-
+import { ErrorMsgComponent } from '../../core/error-msg/error-msg.component';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule,CommonModule], // Import necessary modules
+  imports: [ReactiveFormsModule, ErrorMsgComponent, RouterModule, CommonModule], // Import necessary modules
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -49,9 +54,15 @@ export class LoginComponent {
       .login(this.loginForm.value)
       .pipe(
         catchError((err) => {
-          this.generalError = err.message;
-          this.loading = false;
-          return of(null);
+          if (err.status === 409) {
+            this.generalError = 'This email is already registered.';
+            // Set specific error message
+            return of(null); // Prevent further processing
+          } else {
+            this.generalError = err.error?.message;
+            // Handle other errors
+            return of(null);
+          }
         })
       )
       .subscribe((response) => {

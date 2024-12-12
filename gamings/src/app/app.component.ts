@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { routes } from './app.routes'; 
 import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
-
+import { AuthenticateComponent } from './authenticate/authenticate.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html', // Re-added templateUrl
@@ -13,6 +13,7 @@ import { FooterComponent } from './core/footer/footer.component';
     RouterOutlet,
     HeaderComponent,
     FooterComponent,
+    AuthenticateComponent,
   ],
 })
 export class AppComponent {

@@ -9,15 +9,16 @@ import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../user.service';
 import { User } from '../../models/user';
 import { CommonModule } from '@angular/common';
-
+import { ErrorMsgComponent } from '../../core/error-msg/error-msg.component';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, CommonModule],
+  imports: [RouterLink,ErrorMsgComponent, ReactiveFormsModule, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
+  errorMsg: string | undefined = '';
   constructor(private userService: UserService, private router: Router) {}
 
   form = new FormGroup({
@@ -31,6 +32,7 @@ export class RegisterComponent {
       this.form.invalid ||
       this.form.value.password !== this.form.value.repass
     ) {
+      this.errorMsg = 'Please fill in all fields';
       return;
     }
 
@@ -49,14 +51,12 @@ export class RegisterComponent {
               this.router.navigate(['/home']);
             },
             error: (error) => {
-              console.error('Login error after registration:', error);
-              // Display error message
+             this.errorMsg = error.error.message
             },
           });
       },
       error: (error) => {
-        console.error('Registration error:', error);
-        // Display error message
+      this.errorMsg = error.error.message;
       },
     });
   }
