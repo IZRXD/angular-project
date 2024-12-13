@@ -10,10 +10,11 @@ import { UserService } from '../user.service';
 import { catchError, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ErrorMsgComponent } from '../../core/error-msg/error-msg.component';
+import { ErrorMsgService } from '../../core/error-msg/error-msg.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, ErrorMsgComponent, RouterModule, CommonModule], // Import necessary modules
+  imports: [ReactiveFormsModule, RouterModule,ErrorMsgComponent ,CommonModule], // Import necessary modules
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -21,13 +22,13 @@ export class LoginComponent {
   loginForm: FormGroup;
   emailError: string = '';
   passwordError: string = '';
-  generalError: string = '';
   loading: boolean = false;
 
   constructor(
     private userService: UserService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private errorMsgService: ErrorMsgService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -38,7 +39,6 @@ export class LoginComponent {
   onSubmit() {
     this.emailError = '';
     this.passwordError = '';
-    this.generalError = '';
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       if (this.loginForm.get('email')?.invalid) {
@@ -54,15 +54,17 @@ export class LoginComponent {
       .login(this.loginForm.value)
       .pipe(
         catchError((err) => {
-          if (err.status === 409) {
-            this.generalError = 'This email is already registered.';
-            // Set specific error message
-            return of(null); // Prevent further processing
+          this.loading = false;
+          if (err instanceof Error) {
+            this.errorMsgService.setError(err.message);
+          } else if (err.error && err.error.message) {
+            this.errorMsgService.setError(err.error.message);
+          } else if (err.message) {
+            this.errorMsgService.setError(err.message);
           } else {
-            this.generalError = err.error?.message;
-            // Handle other errors
-            return of(null);
+            this.errorMsgService.setError('An unexpected error occurred.');
           }
+          return of(null);
         })
       )
       .subscribe((response) => {

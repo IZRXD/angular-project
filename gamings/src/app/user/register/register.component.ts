@@ -6,20 +6,25 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { catchError, of } from 'rxjs';
 import { UserService } from '../user.service';
 import { User } from '../../models/user';
 import { CommonModule } from '@angular/common';
 import { ErrorMsgComponent } from '../../core/error-msg/error-msg.component';
+import { ErrorMsgService } from '../../core/error-msg/error-msg.service';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [RouterLink,ErrorMsgComponent, ReactiveFormsModule, CommonModule],
+  imports: [RouterLink, ErrorMsgComponent, ReactiveFormsModule, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
-  errorMsg: string | undefined = '';
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private errorMsgService: ErrorMsgService
+  ) {}
 
   form = new FormGroup({
     email: new FormControl('', Validators.required),
@@ -32,7 +37,7 @@ export class RegisterComponent {
       this.form.invalid ||
       this.form.value.password !== this.form.value.repass
     ) {
-      this.errorMsg = 'Please fill in all fields';
+      this.errorMsgService.setError('Please fill in all fields');
       return;
     }
 
@@ -43,20 +48,37 @@ export class RegisterComponent {
 
     this.userService.register(userData).subscribe({
       next: (response) => {
-        // Handle successful registration
         this.userService
           .login({ email: userData.email!, password: userData.password! })
           .subscribe({
             next: () => {
               this.router.navigate(['/home']);
             },
-            error: (error) => {
-             this.errorMsg = error.error.message
+            error: (err) => {
+              if (err instanceof Error) {
+                this.errorMsgService.setError(err.message);
+              } else if (err.error && err.error.message) {
+                this.errorMsgService.setError(err.error.message);
+              } else if (err.message) {
+                this.errorMsgService.setError(err.message);
+              } else {
+                this.errorMsgService.setError('An unexpected error occurred.');
+              }
+              return of(null);
             },
           });
       },
-      error: (error) => {
-      this.errorMsg = error.error.message;
+      error: (err) => {
+        if (err instanceof Error) {
+          this.errorMsgService.setError(err.message);
+        } else if (err.error && err.error.message) {
+          this.errorMsgService.setError(err.error.message);
+        } else if (err.message) {
+          this.errorMsgService.setError(err.message);
+        } else {
+          this.errorMsgService.setError('An unexpected error occurred.');
+        }
+        return of(null);
       },
     });
   }

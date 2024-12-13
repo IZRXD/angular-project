@@ -1,6 +1,4 @@
-@if(generalError) {
-    <app-error-msg />
-}
+<app-error-msg/>
 <main>
   <section class="auth-section">
     <div class="container">
@@ -24,7 +22,7 @@
               {{ loading ? 'Logging in...' : 'SIGN IN' }}
             </button>
           </div>
-          <div *ngIf="generalError" class="error-message">{{ generalError }}</div>
+          
         </form>
         <div class="helpful-links">
           <h4>Don't have an account? <a routerLink="/register">Register</a></h4>

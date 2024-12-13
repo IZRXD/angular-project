@@ -20,8 +20,8 @@
         <h2>{{ game.title }}</h2>
       </div>
       <div class="card-footer">
-        <p>{{ game.rating }} <i class="fa-solid fa-star"></i></p> 
         <p>{{ game.downloads }} <i class="fa-solid fa-download"></i></p> 
+        <p>{{ game.rating }} <i class="fa-solid fa-star"></i></p> 
         <a [routerLink]="['/catalog', game._id, 'details']">DETAILS</a>
       </div>
     </div>

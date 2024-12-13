@@ -1,40 +1,47 @@
 <section class="auth-section">
   <div class="container">
     <div class="form">
-      <h1>Create Game</h1>
-      <form (ngSubmit)="editGame($event)">
+      <h1>Edit Game</h1>
+      <form #editForm="ngForm" (ngSubmit)="editGame($event)">
         <div class="form-group">
           <label for="title">Title:</label>
-          <input type="text" id="title" name="title"  [(ngModel)]="game.title" required>
+          <input type="text" id="title" name="title" [(ngModel)]="game.title" required #titleInput="ngModel">
+          <span *ngIf="titleInput.touched && titleInput.invalid" class="error">Title is required</span>
         </div>
 
         <div class="form-group">
           <label for="imageUrl">Image URL:</label>
-          <input type="text" id="imageUrl" name="imageUrl"  [(ngModel)]="game.imageUrl" required>
+          <input type="text" id="imageUrl" name="imageUrl" [(ngModel)]="game.imageUrl" required #imageUrlInput="ngModel">
+          <span *ngIf="imageUrlInput.touched && imageUrlInput.invalid" class="error">Image URL is required</span>
         </div>
 
         <div class="form-group">
           <label for="creators">Creators:</label>
-          <input type="text" id="creators" name="creators"  [(ngModel)]="game.creators" required>
+          <input type="text" id="creators" name="creators" [(ngModel)]="game.creators" required #creatorsInput="ngModel">
+          <span *ngIf="creatorsInput.touched && creatorsInput.invalid" class="error">Creators are required</span>
         </div>
 
         <div class="form-group">
-          <label for="rating">Rating:</label>
-          <input type="text" id="rating" name="rating"  [(ngModel)]="game.rating" required>
+          <label for="rating">Rating (1-5):</label>
+          <input type="number" id="rating" name="rating" min="1" max="5" [(ngModel)]="game.rating" required #ratingInput="ngModel">
+          <span *ngIf="ratingInput.touched && (ratingInput.value < 1 || ratingInput.value > 5)" class="error">Rating must be between 1 and 5</span>
+          <span *ngIf="ratingInput.touched && ratingInput.invalid && !(ratingInput.value < 1 || ratingInput.value > 5)" class="error">Rating is required</span>
         </div>
 
         <div class="form-group">
           <label for="downloads">Downloads:</label>
-          <input type="text" id="downloads" name="downloads"  [(ngModel)]="game.downloads" required>
+          <input type="number" id="downloads" name="downloads" [(ngModel)]="game.downloads" required #downloadsInput="ngModel">
+          <span *ngIf="downloadsInput.touched && downloadsInput.invalid" class="error">Downloads are required</span>
         </div>
 
         <div class="form-group">
           <label for="description">Description:</label>
-          <textarea id="description" name="description"  [(ngModel)]="game.description" required></textarea>
+          <textarea id="description" name="description" [(ngModel)]="game.description" required #descriptionInput="ngModel"></textarea>
+          <span *ngIf="descriptionInput.touched && descriptionInput.invalid" class="error">Description is required</span>
         </div>
 
         <div class="form-group">
-          <button class="btn" type="submit">Edit Game</button>
+          <button class="btn" type="submit" [disabled]="editForm.invalid">Edit Game</button>
         </div>
       </form>
     </div>
