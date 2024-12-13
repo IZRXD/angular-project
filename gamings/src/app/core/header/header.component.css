@@ -1,4 +1,13 @@
 .big {
-  background: url("./assets/images/logo.png") no-repeat center center;
-  background-size: cover;
+  width: 70px; /* Adjust to your desired size */
+  height: 70px; /* Same as width for a square */
+  display: block; /* Prevents extra whitespace */
+  overflow: hidden; /* Hides any part of the image that overflows */
+  margin-right: 250px;
+}
+
+.big img {
+  width: 100%; /* Makes the image fill the container */
+  height: 100%; /* Makes the image fill the container */
+  object-fit: cover; /* Covers the entire container, cropping as needed */
 }
