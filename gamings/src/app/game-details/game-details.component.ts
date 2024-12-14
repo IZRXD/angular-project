@@ -18,7 +18,7 @@ import { UserService } from '../user/user.service';
 export class GameDetailsComponent implements OnInit {
   game$: Game | null = null;
   isLoading: boolean = true;
-  isOwner: boolean = false; 
+  isOwner: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,7 +34,7 @@ export class GameDetailsComponent implements OnInit {
       next: (game) => {
         this.gameService.setGame(game);
         this.isLoading = false;
-        this.checkOwnership(game); 
+        this.checkOwnership(game);
       },
       error: (error) => {
         this.isLoading = false;
@@ -50,18 +50,15 @@ export class GameDetailsComponent implements OnInit {
     }
   }
 
-  deleteGame() {
-
-    if (this.game$ && this.game$._id) {
-      this.apiService.deleteGame(this.game$._id).subscribe({
+  deleteGame(game: string | undefined) {
+    console.log('Deleting game:', game);
+    if (game ) {
+      this.apiService.deleteGame(game).subscribe({
         next: () => {
-          console.log('Game deleted successfully.', this.game$);
-
           this.location.back(); // Navigate back to catalog
         },
         error: (error) => {
           console.error('Error deleting game:', error);
-          // Handle error (e.g., display error message)
         },
       });
     } else {
