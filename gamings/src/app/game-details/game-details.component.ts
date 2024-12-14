@@ -5,7 +5,6 @@ import { Game } from '../models/game';
 import { ApiService } from '../api.service';
 import { CommonModule } from '@angular/common';
 import { GameService } from '../game.service';
-import { SafeResourceUrl } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { UserService } from '../user/user.service';
 
@@ -19,7 +18,7 @@ import { UserService } from '../user/user.service';
 export class GameDetailsComponent implements OnInit {
   game$: Game | null = null;
   isLoading: boolean = true;
-  isOwner: boolean = false; // Flag to indicate if the user is the owner
+  isOwner: boolean = false; 
 
   constructor(
     private route: ActivatedRoute,
@@ -35,7 +34,7 @@ export class GameDetailsComponent implements OnInit {
       next: (game) => {
         this.gameService.setGame(game);
         this.isLoading = false;
-        this.checkOwnership(game); // Check ownership after fetching the game
+        this.checkOwnership(game); 
       },
       error: (error) => {
         this.isLoading = false;
@@ -52,7 +51,6 @@ export class GameDetailsComponent implements OnInit {
   }
 
   deleteGame() {
-    console.log(this.game$);
 
     if (this.game$ && this.game$._id) {
       this.apiService.deleteGame(this.game$._id).subscribe({
