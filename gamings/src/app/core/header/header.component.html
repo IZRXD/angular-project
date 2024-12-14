@@ -15,12 +15,12 @@
           <ul class="nav">
             <li><a routerLink="/home">Home</a></li>
             <li><a routerLink="/about">About us</a></li>
+            <li><a routerLink="/catalog">Browse</a></li>
             @if (!isLoggedIn) {
             <li><a routerLink="/login">Login</a></li>
             <li><a routerLink="/register">Register</a></li>
             } @else{
             <li><a routerLink="/create-game">Create</a></li>
-            <li><a routerLink="/catalog">Browse</a></li>
             <li><a (click)="logout()">Logout</a></li>
 
             }
